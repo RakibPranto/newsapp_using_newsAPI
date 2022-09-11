@@ -10,7 +10,7 @@ class NewsApiService {
 
     try {
       var link =
-          "https://newsapi.org/v2/everything?q=bangladesh&apiKey=a99a30ca38f3493e8583f729baab253d&page=$page&sortBy=$sortBy";
+          "https://newsapi.org/v2/everything?q=bangladesh&apiKey=dee7ee20e389469bb7066a81e61ce95b&page=$page&sortBy=$sortBy";
       var response = await http.get(Uri.parse(link));
       var data = jsonDecode(response.body);
       Articles articles;
@@ -22,5 +22,25 @@ class NewsApiService {
       print("the problem is $e");
     }
     return newsList;
+  }
+
+  static Future<List<Articles>> fetchSearchData({required String query}) async {
+    List<Articles> searchList = [];
+
+    try {
+      var link =
+          "https://newsapi.org/v2/everything?q=$query&apiKey=dee7ee20e389469bb7066a81e61ce95b";
+      var response = await http.get(Uri.parse(link));
+      print(response.body);
+      var data = jsonDecode(response.body);
+      Articles articles;
+      for (var i in data['articles']) {
+        articles = Articles.fromJson(i);
+        searchList.add(articles);
+      }
+    } catch (e) {
+      print("the problem is $e");
+    }
+    return searchList;
   }
 }
